@@ -1,12 +1,11 @@
 class ApacheArrow < Formula
   desc "Columnar in-memory analytics layer designed to accelerate big data"
   homepage "https://arrow.apache.org/"
-  url "https://www.apache.org/dyn/closer.lua?path=arrow/arrow-23.0.1/apache-arrow-23.0.1.tar.gz"
-  mirror "https://archive.apache.org/dist/arrow/arrow-23.0.1/apache-arrow-23.0.1.tar.gz"
-  sha256 "bd09adb4feac11fe49d1604f296618866702be610c86e2d513b561d877de6b18"
+  url "https://www.apache.org/dyn/closer.lua?path=arrow/arrow-24.0.0/apache-arrow-24.0.0.tar.gz"
+  mirror "https://archive.apache.org/dist/arrow/arrow-24.0.0/apache-arrow-24.0.0.tar.gz"
+  sha256 "9a8094d24fa33b90c672ab77fdda253f29300c8b0dd3f0b8e55a29dbd98b82c9"
   license "Apache-2.0"
-  revision 5
-  compatibility_version 1
+  compatibility_version 2
   head "https://github.com/apache/arrow.git", branch: "main"
 
   bottle do
@@ -50,19 +49,7 @@ class ApacheArrow < Formula
     cause "fails handling PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED"
   end
 
-  # Apply open PR to support LLVM 22
-  # PR ref: https://github.com/apache/arrow/pull/49429
-  patch do
-    url "https://github.com/apache/arrow/commit/03d40603d9f29a107a5cede0f94e6c0241cd6099.patch?full_index=1"
-    sha256 "22fdd4a15a80a7bf41b899ba1ef5fdcf8c761cbd3bbd1470cd5db2c5a543e8af"
-  end
-  patch do
-    url "https://github.com/apache/arrow/commit/7b9135aab4ce6b8a79e0037ead8093d10174e7d8.patch?full_index=1"
-    sha256 "bb08d0ddf5b3fcb8cee1c354ea0be25a2a246bbef8fd311cc89637b52090bd8e"
-  end
-
   def install
-    # We set `ARROW_ORC=OFF` because it fails to build with Protobuf 27.0
     args = %W[
       -DCMAKE_INSTALL_RPATH=#{rpath}
       -DLLVM_ROOT=#{Formula["llvm"].opt_prefix}
@@ -120,7 +107,7 @@ class ApacheArrow < Formula
         return 0;
       }
     CPP
-    system ENV.cxx, "test.cpp", "-std=c++17", "-I#{include}", "-L#{lib}", "-larrow", "-o", "test"
+    system ENV.cxx, "test.cpp", "-std=c++20", "-I#{include}", "-L#{lib}", "-larrow", "-o", "test"
     system "./test"
   end
 end
