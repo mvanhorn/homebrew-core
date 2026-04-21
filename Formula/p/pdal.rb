@@ -4,6 +4,7 @@ class Pdal < Formula
   url "https://github.com/PDAL/PDAL/releases/download/2.10.1/PDAL-2.10.1-src.tar.bz2"
   sha256 "78765f1d06584c8e9b3b4a5b58c0ebea478d42ad21f1432717b31c20def05522"
   license "BSD-3-Clause"
+  revision 1
   compatibility_version 1
   head "https://github.com/PDAL/PDAL.git", branch: "master"
 
