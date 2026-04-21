@@ -6,6 +6,7 @@ class Harlequin < Formula
   url "https://files.pythonhosted.org/packages/93/ce/cae8ff256fc7f4c67a89cadcefb09c230600cdea92306d4ac9354f0a1a77/harlequin-2.5.2.tar.gz"
   sha256 "7e02cb25f893ab72f486de79bee109b866762a69f5be28d495581ce93d16f870"
   license "MIT"
+  revision 1
   head "https://github.com/tconbeer/harlequin.git", branch: "main"
 
   no_autobump! because: "has non-PyPI resources"
@@ -41,8 +42,8 @@ class Harlequin < Formula
   end
 
   resource "duckdb" do
-    url "https://files.pythonhosted.org/packages/ae/62/590caabec6c41003f46a244b6fd707d35ca2e552e0c70cbf454e08bf6685/duckdb-1.5.1.tar.gz"
-    sha256 "b370d1620a34a4538ef66524fcee9de8171fa263c701036a92bc0b4c1f2f9c6d"
+    url "https://files.pythonhosted.org/packages/0c/66/744b4931b799a42f8cb9bc7a6f169e7b8e51195b62b246db407fd90bf15f/duckdb-1.5.2.tar.gz"
+    sha256 "638da0d5102b6cb6f7d47f83d0600708ac1d3cb46c5e9aaabc845f9ba4d69246"
   end
 
   resource "harlequin-mysql" do
@@ -56,8 +57,8 @@ class Harlequin < Formula
   end
 
   resource "harlequin-postgres" do
-    url "https://files.pythonhosted.org/packages/53/f2/1583d9c25b6245a04ab982fcf6bc08e6602668ecd8c5003f398dce267dad/harlequin_postgres-1.3.0.tar.gz"
-    sha256 "d3532594693c745796b5ba4434218662ce3f9e5abb68b2e4159a825c62eb378b"
+    url "https://files.pythonhosted.org/packages/a4/27/18e42a6a524ed28dc94aa26199fe6766f95073c246517e35f157098e5743/harlequin_postgres-1.3.1.tar.gz"
+    sha256 "25dcb73e97cdfb17c3bcfdc3146418a98ff11ce68f6a51fb1b25322eac9d5223"
   end
 
   resource "jinja2" do
@@ -98,11 +99,17 @@ class Harlequin < Formula
   resource "pandas" do
     url "https://files.pythonhosted.org/packages/33/01/d40b85317f86cf08d853a4f495195c73815fdf205eef3993821720274518/pandas-2.3.3.tar.gz"
     sha256 "e05e1af93b977f7eafa636d043f9f94c7ee3ac81af99c13508215942e64c993b"
+
+    # Workaround for meson 1.11+, deps type error
+    patch do
+      url "https://github.com/pandas-dev/pandas/commit/0e978b68ba68e0f3b1f8b9f6b5a38072948638f0.patch?full_index=1"
+      sha256 "6d182353395464070bf683048dd3b7e79e11f66b4f38e053d2c49d1d060cbb99"
+    end
   end
 
   resource "platformdirs" do
-    url "https://files.pythonhosted.org/packages/19/56/8d4c30c8a1d07013911a8fdbd8f89440ef9f08d07a1b50ab8ca8be5a20f9/platformdirs-4.9.4.tar.gz"
-    sha256 "1ec356301b7dc906d83f371c8f487070e99d3ccf9e501686456394622a01a934"
+    url "https://files.pythonhosted.org/packages/9f/4a/0883b8e3802965322523f0b200ecf33d31f10991d0401162f4b23c698b42/platformdirs-4.9.6.tar.gz"
+    sha256 "3bfa75b0ad0db84096ae777218481852c0ebc6c727b3168c1b9e0118e458cf0a"
   end
 
   resource "prompt-toolkit" do
@@ -126,8 +133,8 @@ class Harlequin < Formula
   end
 
   resource "pyarrow" do
-    url "https://files.pythonhosted.org/packages/88/22/134986a4cc224d593c1afde5494d18ff629393d74cc2eddb176669f234a4/pyarrow-23.0.1.tar.gz"
-    sha256 "b8c5873e33440b2bc2f4a79d2b47017a89c5a24116c055625e6f2ee50523f019"
+    url "https://files.pythonhosted.org/packages/91/13/13e1069b351bdc3881266e11147ffccf687505dbb0ea74036237f5d454a5/pyarrow-24.0.0.tar.gz"
+    sha256 "85fe721a14dd823aca09127acbb06c3ca723efbd436c004f16bca601b04dcc83"
   end
 
   resource "pygments" do
@@ -161,8 +168,8 @@ class Harlequin < Formula
   end
 
   resource "rich" do
-    url "https://files.pythonhosted.org/packages/b3/c6/f3b320c27991c46f43ee9d856302c70dc2d0fb2dba4842ff739d5f46b393/rich-14.3.3.tar.gz"
-    sha256 "b8daa0b9e4eef54dd8cf7c86c03713f53241884e814f4e2f5fb342fe520f639b"
+    url "https://files.pythonhosted.org/packages/c0/8f/0722ca900cc807c13a6a0c696dacf35430f72e0ec571c4275d2371fca3e9/rich-15.0.0.tar.gz"
+    sha256 "edd07a4824c6b40189fb7ac9bc4c52536e9780fbbfbddf6f1e2502c31b068c36"
   end
 
   resource "rich-click" do
@@ -291,8 +298,8 @@ class Harlequin < Formula
   end
 
   resource "tzdata" do
-    url "https://files.pythonhosted.org/packages/5e/a7/c202b344c5ca7daf398f3b8a477eeb205cf3b6f32e7ec3a6bac0629ca975/tzdata-2025.3.tar.gz"
-    sha256 "de39c2ca5dc7b0344f2eba86f49d614019d29f060fc4ebc8a417896a620b56a7"
+    url "https://files.pythonhosted.org/packages/19/f5/cd531b2d15a671a40c0f66cf06bc3570a12cd56eef98960068ebbad1bf5a/tzdata-2026.1.tar.gz"
+    sha256 "67658a1903c75917309e753fdc349ac0efd8c27db7a0cb406a25be4840f87f98"
   end
 
   resource "uc-micro-py" do
