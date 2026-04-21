@@ -2,7 +2,7 @@ class Gdal < Formula
   desc "Geospatial Data Abstraction Library"
   homepage "https://gdal.org/en/stable/"
   license "MIT"
-  revision 1
+  revision 2
   compatibility_version 1
 
   stable do
