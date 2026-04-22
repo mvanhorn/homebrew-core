@@ -2,8 +2,7 @@ class Sherlock < Formula
   include Language::Python::Virtualenv
 
   desc "Hunt down social media accounts by username"
-  # TODO: check the original homepage "https://sherlockproject.xyz/" is back online
-  homepage "https://github.com/sherlock-project/sherlock"
+  homepage "https://sherlockproject.xyz/"
   url "https://files.pythonhosted.org/packages/76/17/d29f35df6ec6424ec15f273a31ad54ad314d1f9056321fb824bed4eda128/sherlock_project-0.16.0.tar.gz"
   sha256 "fcc8f05fb6f55de30938cce5727249f70917b226918a71f6ed3f50d8a6467610"
   license "MIT"
@@ -112,6 +111,8 @@ class Sherlock < Formula
   test do
     assert_match version.to_s, shell_output("#{bin}/sherlock --version")
 
-    assert_match "Search completed with 1 results", shell_output("#{bin}/sherlock --site github homebrew")
+    output = shell_output("#{bin}/sherlock --local --site GitHub homebrew")
+    assert_match "GitHub: https://www.github.com/homebrew", output
+    assert_match "Search completed with 1 results", output
   end
 end
