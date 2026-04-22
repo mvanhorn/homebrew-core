@@ -4,6 +4,7 @@ class Zig < Formula
   url "https://ziglang.org/download/0.16.0/zig-0.16.0.tar.xz"
   sha256 "43186959edc87d5c7a1be7b7d2a25efffd22ce5807c7af99067f86f99641bfdf"
   license "MIT"
+  revision 1
   compatibility_version 1
 
   livecheck do
@@ -34,6 +35,15 @@ class Zig < Formula
 
   # https://github.com/Homebrew/homebrew-core/issues/209483
   skip_clean "lib/zig/libc/darwin/libSystem.tbd"
+
+  # Link against the system libc++ on Darwin instead of letting Zig build its
+  # own from `lib/libcxx/src`. The vendored copy gives the final `zig` binary
+  # a private `std::__1::generic_category()` singleton that does not match the
+  # one libLLVM.dylib resolves via /usr/lib/libc++.1.dylib, so std::error_code
+  # comparisons across the libLLVM boundary misbehave — e.g. `zig ar rcs`
+  # fails to create new archives with ZIG_SHARED_LLVM=ON.
+  # https://github.com/Homebrew/homebrew-core/issues/278849
+  patch :DATA
 
   def install
     # Reduce max_rss to build on CI with less than 8GB memory available
@@ -113,5 +123,25 @@ class Zig < Formula
     C
     system bin/"zig", "cc", "hello.c", "-o", "hello-c"
     assert_equal "Hello, world!", shell_output("./hello-c")
+
+    # Regression test for `zig ar` creating a new archive.
+    # https://github.com/Homebrew/homebrew-core/issues/278849
+    system bin/"zig", "cc", "-c", "hello.c", "-o", "hello.o"
+    system bin/"zig", "ar", "rcs", "test.a", "hello.o"
+    assert_path_exists testpath/"test.a"
   end
 end
+
+__END__
+diff --git a/build.zig b/build.zig
+--- a/build.zig
++++ b/build.zig
+@@ -859,7 +859,7 @@
+                 mod.linkSystemLibrary("unwind", .{});
+             },
+             .driverkit, .ios, .maccatalyst, .macos, .tvos, .visionos, .watchos => {
+-                mod.link_libcpp = true;
++                mod.linkSystemLibrary("c++", .{});
+             },
+             .windows => {
+                 if (target.abi != .msvc) mod.link_libcpp = true;
